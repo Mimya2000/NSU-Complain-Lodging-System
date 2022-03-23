@@ -6,17 +6,19 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    TYPE_OF_USER = (
+        ('Faculty', 'Faculty'),
+        ('Student', 'Student'),
+        ('Administrator', 'Administrator'),
+        ('Staff', 'Staff'),
+    )
+    type = models.CharField(max_length=100, choices=TYPE_OF_USER)
     email = models.EmailField(_('email address'), unique=True)
     name = models.CharField(max_length=200, default='admin')
     phone = models.CharField(max_length=11, unique=True)
     nsu_id = models.CharField(max_length=10, unique=True)
     nsu_card = models.ImageField(upload_to='NSU_ID_CARD/')
     picture = models.ImageField(upload_to='dp/', default='dp/default.png', null=True, blank=True)
-    is_student = models.BooleanField(default=False)
-    is_systemAdmin = models.BooleanField(default=False)
-    is_faculty = models.BooleanField(default=False)
-    is_helpingStaff = models.BooleanField(default=False)
-    is_adminEmployee = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
