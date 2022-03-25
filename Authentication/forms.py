@@ -17,6 +17,11 @@ class CustomUserCreationForm(UserCreationForm):
             'nsu_card': 'NSU Card Image',
         }
 
+        def __init__(self, user, *args, **kwargs):
+            super(CustomUserCreationForm, self).__init__(user, *args, **kwargs)
+            for field in self.fields:
+                self.fields[field].widget.attrs['class'] = 'form-control'
+
 
 class CustomUserChangeForm(UserChangeForm):
 
