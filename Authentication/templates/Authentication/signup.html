@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load widget_tweaks %}
 <html lang="en">
 
 <head>
@@ -45,91 +46,81 @@
 
 <!-- ****************************** NAVBAR ENDS ****************************** -->
 
+{% include 'messages.html' %}
+
+{% if not messages %}
+    <br><br><br><br>
+    <div></div>
+{% endif%}
+
 <!-- ****************************** signup start ****************************** -->
 
-<div class="container" style="padding-top: 100px; position: relative; min-height: 80vh;">
+<div class="container" style="padding-top: 100px; position: relative; min-height: 100vh;">
     <br>
     <div class="card bg-light">
-        <article class="card-body mx-auto" style="max-width: 500px;">
+        <article class="card-body mx-auto" style="width: 500px;">
             <h4 class="card-title mt-3 text-center">Create Account</h4>
             <a href="" class="btn btn-block btn-google"> <i class="fab fa-google"></i>   Login via Gmail</a>
 
             <p class="divider-text text-center">
                 <span class="bg-light">OR</span>
             </p>
-            <form>
+            <form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
-                <div class="form-group input-group ">
-                    <div class="input-group-prepend">
-                        {% if field == type %}
-                        <span class="input-group-text"> <i class="fa fa-building"></i> </span>
-                        {% elif field == 'Name' %}
-                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-                        {% elif field == 'email' %}
-                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-                        {% elif field == 'phone' %}
-                        <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
-
-                        {% endif %}
+                    <div class="form-group input-group">
+                    {% if field.label == 'Sign up as' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                        </div>
+                    {% elif field.label == 'Name' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                        </div>
+                    {% elif field.label == 'Email Address' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                        </div>
+                    {% elif field.label == 'Phone Number' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+                        </div>
+                    {% elif field.label == 'NSU ID' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-id-card"></i> </span>
+                        </div>
+                    {% elif field.label == 'NSU Card Image' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class='fa fa-id-badge'></i> </span>
+                        </div>
+                    {% else %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                        </div>
+                    {% endif %}
+                    {% if field.label == 'Sign up as' %}
+                        <div class="form-control">
+                            <label for="drop" class="form-label" style="opacity: 0.8;">Sign Up As a</label>
+                            {% render_field field id="drop" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
+                        </div>
+                    {% elif field.label == 'NSU Card Image' %}
+                        <div class="form-control">
+                            <label for="cardimg" class="form-label" style="opacity: 0.8;">Insert an image of your NSU ID Card</label>
+                            {% render_field field id="cardimg" %}
+                        </div>
+                    {% else %}
+                        {% render_field field class="form-control" placeholder=field.label %}
+                    {% endif %}
                     </div>
-                    <label class="form-control">{{field.label}}</label>
-                    {{ field }}
                     {% for error in field.errors %}
-                    <p style="color:red;"> {{error}} </p>
+                        <p style="color: red; font-size: 12px; line-height: 0em;"> {{error}} </p>
                     {% endfor %}
-                </div>
                 {% endfor %}
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-                    </div>
-                    <input name="" class="form-control" placeholder="Full name" type="text">
-                </div> <!-- form-group// -->
-                <!--                <div class="form-group input-group">-->
-                <!--                    <div class="input-group-prepend">-->
-                <!--                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>-->
-                <!--                    </div>-->
-                <!--                    <input name="" class="form-control" placeholder="Email address" type="email">-->
-                <!--                </div> &lt;!&ndash; form-group// &ndash;&gt;-->
-                <!--                <div class="form-group input-group">-->
-                <!--                    <div class="input-group-prepend">-->
-                <!--                        <span class="input-group-text"> <i class="fa fa-phone"></i> </span>-->
-                <!--                    </div>-->
-                <!--                    <select class="custom-select" style="max-width: 120px;">-->
-                <!--                        <option selected="">+880</option>-->
-
-                <!--                    </select>-->
-                <!--                    <input name="" class="form-control" placeholder="Phone number" type="text">-->
-                <!--                </div> &lt;!&ndash; form-group// &ndash;&gt;-->
-                <!--                <div class="form-group input-group">-->
-                <!--                    <div class="input-group-prepend">-->
-                <!--                        <span class="input-group-text"> <i class="fa fa-building"></i> </span>-->
-                <!--                    </div>-->
-                <!--                    <select class="form-control">-->
-                <!--                        <option selected=""> Sign up as</option>-->
-                <!--                        <option>Student</option>-->
-                <!--                        <option>Faculty</option>-->
-                <!--                        <option>Staff</option>-->
-                <!--                    </select>-->
-                <!--                </div> &lt;!&ndash; form-group end.// &ndash;&gt;-->
-                <!--                <div class="form-group input-group">-->
-                <!--                    <div class="input-group-prepend">-->
-                <!--                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>-->
-                <!--                    </div>-->
-                <!--                    <input class="form-control" placeholder="Create password" type="password">-->
-                <!--                </div> &lt;!&ndash; form-group// &ndash;&gt;-->
-                <!--                <div class="form-group input-group">-->
-                <!--                    <div class="input-group-prepend">-->
-                <!--                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>-->
-                <!--                    </div>-->
-                <!--                    <input class="form-control" placeholder="Repeat password" type="password">-->
-                <!--                </div> &lt;!&ndash; form-group// &ndash;&gt;-->
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block"> Create Account</button>
                 </div> <!-- form-group// -->
-                <p class="text-center">Already have an account? <a class="link-info fw-bold" href="{% url 'login' %}">Log
-                    In</a></p>
+                <p class="text-center">Already have an account? <a class="text-dark-50 fw-bold text-info"
+                                                                   href="{% url 'login' %}">Log In</a></p>
             </form>
         </article>
     </div> <!-- card.// -->

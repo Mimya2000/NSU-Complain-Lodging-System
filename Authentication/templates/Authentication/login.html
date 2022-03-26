@@ -44,25 +44,12 @@
 
 <!-- ****************************** NAVBAR ENDS ****************************** -->
 
-{% for message in messages %}
-<br><br><br><br>
-{% if message.tags == 'success' %}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <p class="text-center alert__message"> {{ message }} </p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-</div>
-{% elif message.tags == 'error' %}
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <p class="text-center alert__message"> {{ message }} </p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-</div>
-{% elif message.tags == 'info' %}
-<div class="alert alert-info alert-dismissible fade show" role="alert">
-    <p class="text-center alert__message"> {{ message }} </p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-</div>
-{% endif %}
-{% endfor %}
+{% include 'messages.html' %}
+
+{% if not messages %}
+    <br><br><br><br>
+    <div></div>
+{% endif%}
 
 <!-- ****************************** Login Start ****************************** -->
 <div class="container" style="padding-top: 100px; position: relative; min-height: 100vh;">
@@ -75,7 +62,7 @@
                 {% csrf_token %}
                 <div class="form-outline form-white mb-4">
                     <label class="form-label fw-bold" for="email">Email</label>
-                    <input type="text" ame="email" id="email" class="form-control form-control-lg"/>
+                    <input type="text" name="email" id="email" class="form-control form-control-lg"/>
                 </div>
 
                 <div class="form-outline form-white mb-4">
@@ -111,8 +98,6 @@
         </a>
     </div>
 </footer>
-
-<script src="{% static 'js/alert.js' %}"></script>
 <!-- Footer Ends -->
 </body>
 </html>

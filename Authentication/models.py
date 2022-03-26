@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .managers import CustomUserManager
+from .validators import validate_phone, validate_id
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -14,9 +15,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     type = models.CharField(max_length=100, choices=TYPE_OF_USER)
     email = models.EmailField(_('email address'), unique=True)
-    name = models.CharField(max_length=200, default='admin')
-    phone = models.CharField(max_length=11, unique=True)
-    nsu_id = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=200)
+    phone = models.CharField(max_length=11, unique=True, validators=[validate_phone])
+    nsu_id = models.CharField(max_length=10, unique=True, validators=[validate_id])
     nsu_card = models.ImageField(upload_to='NSU_ID_CARD/')
     picture = models.ImageField(upload_to='dp/', default='dp/default.png', null=True, blank=True)
     is_staff = models.BooleanField(default=False)

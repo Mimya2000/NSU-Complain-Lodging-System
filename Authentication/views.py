@@ -1,29 +1,29 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from .models import CustomUser
 
 
+
 def signup(request):
     form = CustomUserCreationForm()
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
+        form = CustomUserCreationForm(request.POST, request.FILES)
+        email_id = str(form['email'])
+        email_id = email_id.split('@', 1)[-1]
+        if form['type'] == 'Staff' and email_id != 'gmail.com':
+            messages.error(request, 'Enter a valid email address')
+        elif form['type'] != 'Staff' and email_id != 'northsouth.edu':
+            messages.error(request, 'Enter your NSU email address')
+        elif form.is_valid():
             user = form.save(commit=False)
-            email_id = user.email
-            email_id = email_id.split('@', 1)[-1]
-            if user.type == 'Staff' and email_id != 'gmail.com':
-                messages.error(request, 'Enter a valid email address')
-            elif user.type != 'Staff' and email_id != 'northsouth.edu':
-                messages.error(request, 'Enter your NSU email address')
-            else:
-                user.is_active = False
-                user.save()
-                email_subject = 'NSU-CLS account activation'
-                email_body = ''
-                messages.success(request, 'Account was created!')
-                login(request, user)
+            user.is_active = False
+            user.save()
+            email_subject = 'NSU-CLS account activation'
+            email_body = ''
+            messages.success(request, 'Account was created!')
+            login(request, user)
         else:
             messages.error(request, 'An error has occurred during registration.')
     context = {'form': form}
@@ -44,5 +44,11 @@ def userLogin(request):
             messages.error(request, "Email or Password is incorrect!")
         else:
             login(request, user)
-            return redirect('profile')
+            return redirect('profile', pk='123')
     return render(request, 'Authentication/login.html')
+
+
+def userLogout(request):
+    logout(request)
+    messages.info(request, 'You were logged out!')
+    return redirect('login')
