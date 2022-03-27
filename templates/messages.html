@@ -1,0 +1,19 @@
+{% for message in messages %}
+    <br><br><br><br>
+    {% if message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <p class="text-center fw-bold"> {{ message }} </p>
+            <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';"></button>
+        </div>
+    {% elif message.tags == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <p class="text-center fw-bold"> {{ message }} </p>
+            <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';"></button>
+        </div>
+    {% elif message.tags == 'info' %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <p class="text-center fw-bold"> {{ message }} </p>
+            <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';"></button>
+        </div>
+    {% endif %}
+{% endfor %}

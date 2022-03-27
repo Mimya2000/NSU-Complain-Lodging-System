@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
@@ -13,11 +13,11 @@
 </head>
 
 
-<body>
+<body style="position: relative; min-height: 100vh;">
 <!-- ****************************** NAVBAR STARTS ****************************** -->
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" href="#">
             <img src="{% static 'images/logo.png' %}" alt="" width="200" class="d-inline-block align-text-top">
         </a>
 
@@ -28,19 +28,16 @@
             <ul class="navbar-nav ms-auto">
 
                 <li class="nav-item">
-                    <a id="cls" href="" class="nav-link active">What is CLS?</a>
+                    <a href="" class="nav-link">My Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a id="faq" href="#questions" class="nav-link">FAQ</a>
+                    <a href="" class="nav-link">Add a Complaint</a>
                 </li>
                 <li class="nav-item">
-                    <a id="con" href="#contact" class="nav-link">Contact Us</a>
+                    <a href="" class="nav-link">Status</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link">Sign up</a>
+                    <a href="{% url 'logout' %}" class="nav-link">Logout</a>
                 </li>
             </ul>
         </div>
@@ -49,47 +46,39 @@
 
 <!-- ****************************** NAVBAR ENDS ****************************** -->
 <!-- ****************************** Profile Design start ****************************** -->
-
+<div class="container" style="padding-top: 100px; position: relative; min-height: 100vh;">
+    <br>
         <div class="bg-light mw-100">
             <div class="row d-flex justify-content-center">
                 <div class="col-md-10 mt-5 pt-5">
                     <div class="row z-depth-3">
                         <div class="col-sm-4 bg.info rounded-left">
                             <div class="card-block text-center text-black">
-                                <i class="fas fa-user-tie fa-7x mt-5"></i>
-                                <h2 class="font-weight-bold mt-4">Fahim Faisal Deepto</h2>
-                                <p>student</p>
-                                <i class="far fa-edit fa-2x mb-4"></i>
+                                <img class="img-fluid rounded mx-auto d-block" src="{% static 'images/dp/default.png' %}">
+                                <h2 class="font-weight-bold mt-4">Name</h2>
+                                <p>Type</p>
+                                <br>
                             </div>
                         </div>
                         <div class="col-sm-8 bg.white rounded-right">
-                            <h3 class="mt-3 text-center">Information</h3>
+                            <h3 class="mt-3 text-left">Information</h3>
                             <hr class="badge-primary mt-0 w-25">
-                            <div class="row">
+                            <div class="row text-left" style="padding-top: 30px;">
                                 <div class="col-sm-6">
-                                    <p class="font-weight-bold">Name:</p>
-                                    <h6 class="text-muted">Fahim Faisal Deepto</h6>
+                                    <p class="fw-bold text-muted"><span class="text-dark">Name:</span> name</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <p class="font-weight-bold">Email:</p>
-                                    <h6 class="text-muted">faisal.deepto@gmail.com</h6>
-                                </div><div class="col-sm-6">
-                                    <p class="font-weight-bold">Phone:</p>
-                                    <h6 class="text-muted">01534403341</h6>
-                                </div><div class="col-sm-6">
-                                    <p class="font-weight-bold">NSU ID:</p>
-                                    <h6 class="text-muted">1811899042</h6>
-                                </div><div class="col-sm-6">
-                                    <p class="font-weight-bold">Complain Lodged:</p>
-                                    <h6 class="text-muted">okay done</h6>
-                                </div><div class="col-sm-6">
-                                    <p class="font-weight-bold">Complain Reviewd:</p>
-                                    <h6 class="text-muted">2500 taka fine</h6>
+                                    <p class="fw-bold text-muted"><span class="text-dark">Email:</span> email</p>
                                 </div>
-                            </div><div class="col-sm-6">
-                                <p class="font-weight-bold">Active Complain:</p>
-                                <h6 class="text-muted">10</h6>
-                            </div>
+                                <div class="col-sm-6">
+                                    <p class="fw-bold text-muted"><span class="text-dark">Phone:</span> phone</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="fw-bold text-muted"><span class="text-dark">Nsu id:</span> nsu id</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="fw-bold text-muted"><span class="text-dark">Active complaints:</span> name</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -97,7 +86,7 @@
             </div>
 
         </div>
-    </header>
+    </div>
 <!-- ****************************** Profile Design ENDS ****************************** -->
 
 
