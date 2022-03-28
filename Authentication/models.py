@@ -61,6 +61,9 @@ class Student(models.Model):
     department = models.CharField(max_length=100, choices=DEPARTMENT, default='Not Specified', null=True, blank=True)
     program = models.CharField(max_length=100, null=True, blank=True)
 
+    def __str__(self):
+        return str(self.user)
+
 
 class Faculty(models.Model):
     DEPARTMENT = (
@@ -86,6 +89,9 @@ class Faculty(models.Model):
     department = models.CharField(max_length=100, choices=DEPARTMENT, default='Not Specified', null=True, blank=True)
     is_chairman = models.BooleanField(default=False)
 
+    def __str__(self):
+        return str(self.user)
+
 
 class AdminEmployee(models.Model):
     OFFICE = (
@@ -101,3 +107,6 @@ class AdminEmployee(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     office = models.CharField(max_length=100, choices=OFFICE, default='Not Specified', null=True, blank=True)
     designation = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.user)
