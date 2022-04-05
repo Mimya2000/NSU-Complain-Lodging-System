@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Home.apps.HomeConfig',
     'Authentication.apps.AuthenticationConfig',
     'Profile.apps.ProfileConfig',
+    'Complaint.apps.ComplaintConfig',
 ]
 
 MIDDLEWARE = [
