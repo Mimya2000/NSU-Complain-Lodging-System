@@ -9,7 +9,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from .forms import CustomUserCreationForm
-from .models import CustomUser
+from .models import CustomUser, Faculty, Staff, Student, Administrator
 from .token import account_activation_token
 
 
@@ -61,6 +61,22 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        if user.type == 'Faculty':
+            profile = Faculty.objects.create(
+                user=user,
+            )
+        elif user.type == 'Student':
+            profile = Student.objects.create(
+                user=user,
+            )
+        elif user.type == 'Administrator':
+            profile = Administrator.objects.create(
+                user=user,
+            )
+        else:
+            profile = Staff.objects.create(
+                user=user,
+            )
         messages.success(request, 'Your account is successfully activated')
         login(request, user)
         return redirect('my-account')

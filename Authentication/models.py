@@ -19,7 +19,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=11, unique=True, validators=[validate_phone])
     nsu_id = models.CharField(max_length=10, unique=True, validators=[validate_id])
     nsu_card = models.ImageField(upload_to='NSU_ID_CARD/')
-    picture = models.ImageField(upload_to='dp/', default='dp/default.png', null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
@@ -60,6 +59,7 @@ class Student(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     department = models.CharField(max_length=100, choices=DEPARTMENT, default='Not Specified', null=True, blank=True)
     program = models.CharField(max_length=100, null=True, blank=True)
+    picture = models.ImageField(upload_to='dp/', default='dp/default.png', null=True, blank=True)
 
     def __str__(self):
         return str(self.user)
@@ -88,12 +88,13 @@ class Faculty(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     department = models.CharField(max_length=100, choices=DEPARTMENT, default='Not Specified', null=True, blank=True)
     is_chairman = models.BooleanField(default=False)
+    picture = models.ImageField(upload_to='dp/', default='dp/default.png', null=True, blank=True)
 
     def __str__(self):
         return str(self.user)
 
 
-class AdminEmployee(models.Model):
+class Administrator(models.Model):
     OFFICE = (
         ('Not Specified', 'Not Specified'),
         ("Registrar's Office", "Registrar's Office"),
@@ -107,6 +108,30 @@ class AdminEmployee(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     office = models.CharField(max_length=100, choices=OFFICE, default='Not Specified', null=True, blank=True)
     designation = models.CharField(max_length=100, null=True, blank=True)
+    picture = models.ImageField(upload_to='dp/', default='dp/default.png', null=True, blank=True)
 
     def __str__(self):
         return str(self.user)
+
+
+class Staff(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    picture = models.ImageField(upload_to='dp/', default='dp/default.png', null=True, blank=True)
+
+    def __str__(self):
+        return str(self.user)
+
+
+# class Reviewer(models.Model):
+#     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return str(self.user)
+#
+#
+# class NonReviewer(models.Model):
+#     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return str(self.user)
+
