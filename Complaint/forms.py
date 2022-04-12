@@ -1,15 +1,14 @@
 from django.forms import ModelForm, ModelChoiceField
 from .models import Complaints
-import Authentication.models as auth_model
+from django.contrib.auth import get_user_model
 
 
 class CreateComplaintForm(ModelForm):
 
     class Meta:
         model = Complaints
-        fields = ('against', 'complaint_text', 'proof', 'reviewer')
+        fields = ('against', 'against_2', 'against_3', 'complaint_text', 'proof', 'reviewer')
         labels = {
-            'against': 'Complaint Against',
             'complaint_text': 'Write your complaint here...',
             'proof': 'Attach proof (image)',
             'reviewer': 'Choose a reviewer',
@@ -17,6 +16,8 @@ class CreateComplaintForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CreateComplaintForm, self).__init__(*args, **kwargs)
-        self.fields['against'] = ModelChoiceField(queryset=auth_model.NonReviewer.objects.all().exclude(user=user))
-        self.fields['reviewer'] = ModelChoiceField(queryset=auth_model.Reviewer.objects.all().exclude(user=user))
+        self.fields['against'] = ModelChoiceField(queryset=get_user_model().objects.all().exclude(email=user).exclude(email='projectwork.testemail@gmail.com'))
+        self.fields['against_2'] = ModelChoiceField(required=False, queryset=get_user_model().objects.all().exclude(email=user).exclude(email='projectwork.testemail@gmail.com'))
+        self.fields['against_3'] = ModelChoiceField(required=False, queryset=get_user_model().objects.all().exclude(email=user).exclude(email='projectwork.testemail@gmail.com'))
+        self.fields['reviewer'] = ModelChoiceField(required=False, queryset=get_user_model().objects.all().exclude(email=user).exclude(type='Student').exclude(type='Staff'))
 

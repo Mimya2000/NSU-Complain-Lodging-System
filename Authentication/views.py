@@ -7,10 +7,15 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-
+from django.contrib.auth.forms import PasswordResetForm
 from .forms import CustomUserCreationForm
-from .models import CustomUser
+from .models import CustomUser, Faculty, Staff, Student, Administrator
 from .token import account_activation_token
+from django.db.models.query_utils import Q
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail, BadHeaderError
+from django.conf import settings
+from django.http import HttpResponse
 
 
 def signup(request):
@@ -61,6 +66,22 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        if user.type == 'Faculty':
+            profile = Faculty.objects.create(
+                user=user,
+            )
+        elif user.type == 'Student':
+            profile = Student.objects.create(
+                user=user,
+            )
+        elif user.type == 'Administrator':
+            profile = Administrator.objects.create(
+                user=user,
+            )
+        else:
+            profile = Staff.objects.create(
+                user=user,
+            )
         messages.success(request, 'Your account is successfully activated')
         login(request, user)
         return redirect('my-account')
@@ -113,3 +134,42 @@ def userLogout(request):
     logout(request)
     messages.info(request, 'You were logged out!')
     return redirect('login')
+
+
+def passwordReset(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data['email']
+            associated_users = CustomUser.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Requested"
+                    email_template_name = "Text/password_reset_email.txt"
+                    c = {
+                        "email": user.email,
+                        "name": user.name,
+                        'domain': '127.0.0.1:8000',
+                        'site_name': 'NSU_CLS',
+                        "uid": urlsafe_base64_encode(force_bytes(user.nsu_id)),
+                        "user": user,
+                        'token': default_token_generator.make_token(user),
+                        'protocol': 'http',
+                    }
+                    email = render_to_string(email_template_name, c)
+                    try:
+                        send_mail(
+                            subject,
+                            email,
+                            settings.EMAIL_HOST_USER,
+                            [user.email],
+                            fail_silently=False,
+                        )
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    messages.success(request, 'A message with reset password instructions has been sent to your inbox.')
+                    return redirect("password_reset_done")
+            messages.error(request, 'An invalid email has been entered.')
+    form = PasswordResetForm()
+    context = {'form': form}
+    return render(request, 'reset_password.html', context)

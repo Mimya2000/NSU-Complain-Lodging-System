@@ -17,7 +17,7 @@
 <!-- ****************************** NAVBAR STARTS ****************************** -->
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="">
             <img src="{% static 'images/logo.png' %}" alt="" width="200" class="d-inline-block align-text-top">
         </a>
 
@@ -48,6 +48,11 @@
 
 {% include 'messages.html' %}
 
+{% if not messages %}
+    <br><br><br><br>
+    <div></div>
+{% endif %}
+
 <!-- ****************************** Profile Design start ****************************** -->
 <div class="container" style="padding-top: 100px; position: relative; min-height: 100vh;">
     <br>
@@ -57,14 +62,14 @@
                     <div class="row z-depth-3">
                         <div class="col-sm-4 bg.info rounded-left">
                             <div class="card-block text-center text-black">
-                                <img class="img-fluid rounded mx-auto d-block" src="{{ user.picture.url }}">
+                                <img class="img-fluid rounded mx-auto d-block" src="{{ profile.picture.url }}">
                                 <h2 class="font-weight-bold mt-4">{{ user.name }}</h2>
                                 {% if user.type == 'Faculty' %}
                                     <p>{{ user.type }}, Chairman</p>
                                 {% else %}
                                     <p>{{ user.type }}</p>
                                 {% endif %}
-                                <a class="link-info" href="#"><span><i class="bi bi-pencil-square"></i></span></a>
+                                <a class="link-info" href="{% url 'update-profile' %}"><span><i class="bi bi-pencil-square"></i></span></a>
                                 <br><br><br>
                             </div>
                         </div>
