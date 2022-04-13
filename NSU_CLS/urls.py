@@ -13,6 +13,7 @@ urlpatterns = [
     path('auth/', include('Authentication.urls')),
     path('profile/', include('Profile.urls')),
     path('complaints/', include('Complaint.urls')),
+
     path('password_reset/', v.passwordReset, name="password_reset"),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="reset_password_sent.html"),
          name="password_reset_done"),

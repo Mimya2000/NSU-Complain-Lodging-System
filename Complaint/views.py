@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from .forms import CreateComplaintForm
+from .models import Complaints
 
 
 @login_required(login_url='login')
@@ -80,3 +81,10 @@ def addComplaint(request):
             messages.error(request, 'Something went wrong! Try again!')
     context = {'form': form}
     return render(request, 'Complaint/add_complaint.html', context)
+
+
+@login_required(login_url='login')
+def complaintCard(request, pk):
+    complaint_obj = Complaints.objects.get(id=pk)
+    context = {'complaint': complaint_obj}
+    return render(request, 'Complaint/complaint_card.html', context)

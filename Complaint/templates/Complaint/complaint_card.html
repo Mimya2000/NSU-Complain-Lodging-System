@@ -62,9 +62,8 @@
                 <div class="row z-depth-3">
                     <div class="col-sm-4 bg.info rounded-left">
                         <div class="card-block text-center text-black">
-                            <img class="img-fluid rounded mx-auto d-block" src="{{ profile.picture.url }}">
-                            <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Text:</span> {{
-                                    user.email }}</p>
+                            <img class="img-fluid rounded mx-auto d-block" src="{{ complaint.proof.url }}">
+                            <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Text:</span> {{ complaint.complaint_text }}</p>
                         </div>
                     </div>
                     <div class="col-sm-8 bg.white rounded-right">
@@ -72,24 +71,30 @@
                         <hr class="badge-primary mt-0 w-25">
                         <div class="row text-left">
                             <div class="col-sm-6 pt-3">
-                                <p class="h5 fw-bold text-muted"><span class="text-dark">Lodged By:</span> {{ user.name
+                                <p class="h5 fw-bold text-muted"><span class="text-dark">Lodged By:</span> {{ complaint.user.name
                                     }}</p>
                             </div>
                             <div class="col-sm-6 pt-3">
-                                <p class="h5 fw-bold text-muted"><span class="text-dark">Lodged Date:</span> {{
-                                    user.email }}</p>
+                                <p class="h5 fw-bold text-muted"><span class="text-dark">Lodged Date:</span> {{ complaint.created }}</p>
                             </div>
                             <div class="col-sm-6 pt-3">
-                                <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against:</span> {{
-                                    user.email }}</p>
+                                <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against:</span> {{ complaint.against }}</p>
+                            </div>
+                            {% if complaint.against_2 is not None %}
+                                <div class="col-sm-6 pt-3">
+                                    <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against (2nd):</span> {{ complaint.against_2 }}</p>
+                                </div>
+                            {% endif %}
+                            {% if complaint.against_3 is not None %}
+                                <div class="col-sm-6 pt-3">
+                                    <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against (3rd):</span> {{ complaint.against_3 }}</p>
+                                </div>
+                            {% endif %}
+                            <div class="col-sm-6 pt-3">
+                                <p class="h5 fw-bold text-muted"><span class="text-dark">Current Reviewer:</span> {{ complaint.reviewer.name }}</p>
                             </div>
                             <div class="col-sm-6 pt-3">
-                                <p class="h5 fw-bold text-muted"><span class="text-dark">Current Reviewer:</span> {{
-                                    user.phone }}</p>
-                            </div>
-                            <div class="col-sm-6 pt-3">
-                                <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Status:</span> {{
-                                    user.nsu_id }}</p>
+                                <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Status:</span> {{ complaint.status }}</p>
                             </div>
                         </div>
                     </div>
