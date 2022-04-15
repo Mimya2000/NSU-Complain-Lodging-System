@@ -88,3 +88,23 @@ def complaintCard(request, pk):
     complaint_obj = Complaints.objects.get(id=pk)
     context = {'complaint': complaint_obj}
     return render(request, 'Complaint/complaint_card.html', context)
+
+
+@login_required(login_url='login')
+def complaintStatus(request):
+    complaints = Complaints.objects.all()
+    if request.user.type == 'Student' or request.user.type == 'Staff':
+        lodged = complaints.filter(user=request.user)
+        lodged_open = lodged.exclude(status='Reviewed').exclude(status='Declined')
+        lodged_close = lodged.exclude(status='In progress').exclude(status='Submitted')
+        context = {'lodged_open': lodged_open, 'lodged_close': lodged_close}
+        return render(request, 'Complaint/status.html', context)
+    else:
+        lodged = complaints.filter(user=request.user)
+        lodged_open = lodged.exclude(status='Reviewed').exclude(status='Declined')
+        lodged_close = lodged.exclude(status='In progress').exclude(status='Submitted')
+        review = complaints.filter(reviewer=request.user)
+        review_open = review.exclude(status='Reviewed').exclude(status='Declined')
+        review_close = review.exclude(status='In progress').exclude(status='Submitted')
+        context = {'lodged_open': lodged_open, 'lodged_close': lodged_close, 'review_open': review_open, 'review_close': review_close}
+        return render(request, 'Complaint/status.html', context)
