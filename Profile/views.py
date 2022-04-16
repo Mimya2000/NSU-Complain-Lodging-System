@@ -2,12 +2,13 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import StudentForm, FacultyForm, AdminEmployeeForm, HelpingStaffForm
+from django.contrib.auth import get_user_model
 
 
 @login_required(login_url='login')
 def userAccount(request):
     user_object = request.user
-    print(user_object.type)
+    # print(user_object.type)
     if user_object.type == 'Student':
         profile = user_object.student
     elif user_object.type == 'Faculty':
@@ -63,5 +64,20 @@ def updateProfile(request):
 
 
 def userProfile(request, pk):
-    return render(request, 'Profile/user_profile.html')
+    user_object = get_user_model().objects.get(email=pk)
+    if request.user == user_object:
+        return redirect('my-account')
+    if user_object.type == 'Student':
+        profile = user_object.student
+    elif user_object.type == 'Faculty':
+        profile = user_object.faculty
+    elif user_object.type == 'Staff':
+        profile = user_object.staff
+    elif user_object.type == 'Administrator':
+        profile = user_object.administrator
+    else:
+        context = {'user': user_object}
+        return render(request, 'Profile/user_profile.html', context)
+    context = {'user': user_object, 'profile': profile}
+    return render(request, 'Profile/user_profile.html', context)
 

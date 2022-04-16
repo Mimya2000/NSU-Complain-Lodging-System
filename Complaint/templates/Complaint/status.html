@@ -6,9 +6,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
     <title>Status</title>
 </head>
 
@@ -55,12 +58,13 @@
     <div class="bg-light">
         <div class="row d-flex justify-content-center p-4">
             <h2>Complaints Lodged (Open)</h2>
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Lodged by</th>
                     <th scope="col">Reviewer</th>
                     <th scope="col">Current Status</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -69,6 +73,7 @@
                     <td>{{complaint.user.name}}</td>
                     <td>{{complaint.reviewer.name}}</td>
                     <td>{{complaint.status}}</td>
+                    <td><a class="shadow-sm p-2 mb-2 bg-secondary rounded text-decoration-none text-light" href="{% url 'complaint-card' complaint.id %}">View Complaint <span><i class="fas fa-angle-right"></i> </span></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -82,12 +87,13 @@
     <div class="bg-light">
         <div class="row d-flex justify-content-center p-4">
             <h2>Complaints to be reviewed</h2>
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Lodged by</th>
                     <th scope="col">Reviewer</th>
                     <th scope="col">Current Status</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -96,6 +102,7 @@
                     <td>{{complaint.user.name}}</td>
                     <td>{{complaint.reviewer.name}}</td>
                     <td>{{complaint.status}}</td>
+                    <td><a class="shadow-sm p-2 mb-2 bg-secondary rounded text-decoration-none text-light" href="{% url 'complaint-card' complaint.id %}">View Complaint <span><i class="fas fa-angle-right"></i> </span></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -109,12 +116,13 @@
     <div class="bg-light">
         <div class="row d-flex justify-content-center p-4">
             <h2>Complaints Lodged (Closed)</h2>
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Lodged by</th>
                     <th scope="col">Reviewer</th>
                     <th scope="col">Current Status</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -123,6 +131,7 @@
                     <td>{{complaint.user.name}}</td>
                     <td>{{complaint.reviewer.name}}</td>
                     <td>{{complaint.status}}</td>
+                    <td><a class="shadow-sm p-2 mb-2 bg-secondary rounded text-decoration-none text-light" href="{% url 'complaint-card' complaint.id %}">View Complaint <span><i class="fas fa-angle-right"></i> </span></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -136,12 +145,13 @@
     <div class="bg-light">
         <div class="row d-flex justify-content-center p-4">
             <h2>Complaints Reviewed</h2>
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Lodged by</th>
                     <th scope="col">Reviewer</th>
                     <th scope="col">Current Status</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -150,6 +160,7 @@
                     <td>{{complaint.user.name}}</td>
                     <td>{{complaint.reviewer.name}}</td>
                     <td>{{complaint.status}}</td>
+                    <td><a class="shadow-sm p-2 mb-2 bg-secondary rounded text-decoration-none text-light" href="{% url 'complaint-card' complaint.id %}">View Complaint <span><i class="fas fa-angle-right"></i> </span></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>

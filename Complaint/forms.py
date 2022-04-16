@@ -21,3 +21,16 @@ class CreateComplaintForm(ModelForm):
         self.fields['against_3'] = ModelChoiceField(required=False, queryset=get_user_model().objects.all().exclude(email=user).exclude(email='projectwork.testemail@gmail.com'))
         self.fields['reviewer'] = ModelChoiceField(required=False, queryset=get_user_model().objects.all().exclude(email=user).exclude(type='Student').exclude(type='Staff'))
 
+
+class EditComplaintReviewerForm(ModelForm):
+    class Meta:
+        model = Complaints
+        fields = ('reviewer', 'status')
+        labels = {
+            'reviewer': 'Reviewer',
+            'status': 'Status',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(EditComplaintReviewerForm, self).__init__(*args, **kwargs)
+        self.fields['reviewer'] = ModelChoiceField(required=False, queryset=get_user_model().objects.all().exclude(type='Student').exclude(type='Staff'))

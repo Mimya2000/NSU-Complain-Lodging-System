@@ -64,6 +64,7 @@
                         <div class="card-block text-center text-black">
                             <img class="img-fluid rounded mx-auto d-block" src="{{ complaint.proof.url }}">
                             <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Text:</span> {{ complaint.complaint_text }}</p>
+                            <a class="link-info" href="{% url 'edit-complaint' complaint.id %}"><span><i class="bi bi-pencil-square"></i></span></a>
                         </div>
                     </div>
                     <div class="col-sm-8 bg.white rounded-right">
@@ -71,27 +72,26 @@
                         <hr class="badge-primary mt-0 w-25">
                         <div class="row text-left">
                             <div class="col-sm-6 pt-3">
-                                <p class="h5 fw-bold text-muted"><span class="text-dark">Lodged By:</span> {{ complaint.user.name
-                                    }}</p>
+                                <a class="text-decoration-none" href="{% url 'profile' complaint.user %}"><p class="h5 fw-bold text-muted"><span class="text-dark">Lodged By:</span> {{ complaint.user.name }}</p></a>
                             </div>
                             <div class="col-sm-6 pt-3">
                                 <p class="h5 fw-bold text-muted"><span class="text-dark">Lodged Date:</span> {{ complaint.created }}</p>
                             </div>
                             <div class="col-sm-6 pt-3">
-                                <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against:</span> {{ complaint.against }}</p>
+                                <a class="text-decoration-none" href="{% url 'profile' complaint.against %}"><p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against:</span> {{ complaint.against.name }}</p></a>
                             </div>
                             {% if complaint.against_2 is not None %}
                                 <div class="col-sm-6 pt-3">
-                                    <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against (2nd):</span> {{ complaint.against_2 }}</p>
+                                    <a class="text-decoration-none" href="{% url 'profile' complaint.against_2 %}"><p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against (2nd):</span> {{ complaint.against_2.name }}</p></a>
                                 </div>
                             {% endif %}
                             {% if complaint.against_3 is not None %}
                                 <div class="col-sm-6 pt-3">
-                                    <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against (3rd):</span> {{ complaint.against_3 }}</p>
+                                    <a class="text-decoration-none" href="{% url 'profile' complaint.against_3 %}"><p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Against (3rd):</span> {{ complaint.against_3.name }}</p></a>
                                 </div>
                             {% endif %}
                             <div class="col-sm-6 pt-3">
-                                <p class="h5 fw-bold text-muted"><span class="text-dark">Current Reviewer:</span> {{ complaint.reviewer.name }}</p>
+                                <a class="text-decoration-none" href="{% url 'profile' complaint.reviewer %}"><p class="h5 fw-bold text-muted"><span class="text-dark">Current Reviewer:</span> {{ complaint.reviewer.name }}</p></a>
                             </div>
                             <div class="col-sm-6 pt-3">
                                 <p class="h5 fw-bold text-muted"><span class="text-dark">Complaint Status:</span> {{ complaint.status }}</p>

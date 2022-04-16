@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
-from .forms import CreateComplaintForm
+from .forms import CreateComplaintForm, EditComplaintReviewerForm
 from .models import Complaints
 
 
@@ -108,3 +108,57 @@ def complaintStatus(request):
         review_close = review.exclude(status='In progress').exclude(status='Submitted')
         context = {'lodged_open': lodged_open, 'lodged_close': lodged_close, 'review_open': review_open, 'review_close': review_close}
         return render(request, 'Complaint/status.html', context)
+
+
+def editComplaint(request, pk):
+    complaint = Complaints.objects.get(id=pk)
+    reviewer = complaint.reviewer
+    lodger = complaint.user
+    if request.user == reviewer:
+        form = EditComplaintReviewerForm(instance=complaint)
+        if request.method == 'POST':
+            form = EditComplaintReviewerForm(request.POST, instance=complaint)
+            if form.is_valid():
+                complaint = form.save(commit=False)
+                if complaint.reviewer is None:
+                    complaint.reviewer = reviewer
+                complaint.save()
+                messages.success(request, 'Your complaint review has been updated!')
+                names = str(complaint.against.name)
+                if complaint.against_2 is not None:
+                    names += ', '
+                    names += str(complaint.against_2.name)
+                if complaint.against_3 is not None:
+                    names += ', '
+                    names += str(complaint.against_3.name)
+                subject = 'Complaint Updated!'
+                body = 'Hello ' + str(lodger.name) + ', your complaint against ' + names + ' has been updated by ' + reviewer.name + ' successfully.'
+                send_mail(
+                    subject,
+                    body,
+                    settings.EMAIL_HOST_USER,
+                    [lodger.email],
+                    fail_silently=False,
+                )
+                body = 'Hello ' + str(reviewer.name) + ', your update has been saved successfully.'
+                send_mail(
+                    subject,
+                    body,
+                    settings.EMAIL_HOST_USER,
+                    [reviewer.email],
+                    fail_silently=False,
+                )
+                if reviewer is not complaint.reviewer:
+                    body = 'Hello ' + str(complaint.reviewer.name) + ', you have been assigned to review a complaint by ' + reviewer.name + '.'
+                    send_mail(
+                        subject,
+                        body,
+                        settings.EMAIL_HOST_USER,
+                        [complaint.reviewer.email],
+                        fail_silently=False,
+                    )
+                return redirect('my-account')
+            else:
+                messages.error(request, 'Something went wrong!')
+    context = {'form': form, 'complaint': complaint}
+    return render(request, 'Complaint/edit_complaint.html', context)
