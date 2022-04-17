@@ -1,5 +1,5 @@
 from django.forms import ModelForm, ModelChoiceField
-from .models import Complaints
+from .models import Complaints, Comments
 from django.contrib.auth import get_user_model
 
 
@@ -44,3 +44,13 @@ class EditComplaintNonReviewerForm(ModelForm):
             'complaint_text': 'Text',
             'proof': 'Proof',
         }
+
+
+class MakeCommentForm(ModelForm):
+    class Meta:
+        model = Comments
+        fields = ('comment_text',)
+        labels = {
+            'comment_text': 'Write a comment...',
+        }
+

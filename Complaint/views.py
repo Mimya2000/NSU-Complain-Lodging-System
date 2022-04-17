@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
-from .forms import CreateComplaintForm, EditComplaintReviewerForm, EditComplaintNonReviewerForm
-from .models import Complaints
+from .forms import CreateComplaintForm, EditComplaintReviewerForm, EditComplaintNonReviewerForm, MakeCommentForm
+from .models import Complaints, Comments, History
 
 
 @login_required(login_url='login')
@@ -85,8 +85,23 @@ def addComplaint(request):
 
 @login_required(login_url='login')
 def complaintCard(request, pk):
+    form = MakeCommentForm()
     complaint_obj = Complaints.objects.get(id=pk)
-    context = {'complaint': complaint_obj}
+    if complaint_obj.reviewer == request.user or complaint_obj.user == request.user or request.user.email == 'projectwork.testemail@gmail.com':
+        messages.error(request, 'You are not authorized to see this complaint!')
+        return redirect('my-account')
+    comments = Comments.objects.all().filter(complaint_id=pk)
+    if request.method == 'POST':
+        form = MakeCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.complaint_id = pk
+            comment.save()
+            messages.success(request, 'Your comment has been posted successfully.')
+        else:
+            messages.error(request, 'Something went wrong with your comment!')
+    context = {'complaint': complaint_obj, 'form': form, 'comments': comments}
     return render(request, 'Complaint/complaint_card.html', context)
 
 
@@ -110,6 +125,7 @@ def complaintStatus(request):
         return render(request, 'Complaint/status.html', context)
 
 
+@login_required(login_url='login')
 def editComplaint(request, pk):
     complaint = Complaints.objects.get(id=pk)
     reviewer = complaint.reviewer
@@ -197,3 +213,14 @@ def editComplaint(request, pk):
                 messages.error(request, 'Something went wrong!')
     context = {'form': form, 'complaint': complaint}
     return render(request, 'Complaint/edit_complaint.html', context)
+
+
+@login_required(login_url='login')
+def seeHistory(request, pk):
+    complaint_obj = Complaints.objects.get(id=pk)
+    if complaint_obj.reviewer == request.user or complaint_obj.user == request.user or request.user.email == 'projectwork.testemail@gmail.com':
+        messages.error(request, 'You are not authorized to see this complaint!')
+        return redirect('my-account')
+    history = History.objects.all().filter(complaint_id=pk)
+    context = {'history': history}
+    return render(request, 'Complaint/history.html', context)
