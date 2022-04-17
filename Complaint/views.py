@@ -96,7 +96,7 @@ def complaintCard(request, pk):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.user = request.user
-            comment.complaint_id = pk
+            comment.complaint_id = complaint_obj
             comment.save()
             messages.success(request, 'Your comment has been posted successfully.')
         else:
@@ -179,7 +179,7 @@ def editComplaint(request, pk):
     else:
         form = EditComplaintNonReviewerForm(instance=complaint)
         if request.method == 'POST':
-            form = EditComplaintNonReviewerForm(request.POST, instance=complaint)
+            form = EditComplaintNonReviewerForm(request.POST, request.FILES, instance=complaint)
             if form.is_valid():
                 complaint = form.save(commit=False)
                 complaint.save()
