@@ -42,6 +42,12 @@ def addComplaint(request):
                             context = {'form': form}
                             return render(request, 'Complaint/add_complaint.html', context)
                     complaint.save()
+                    history = History.objects.create(
+                        complaint_id=complaint,
+                        reviewer=complaint.reviewer,
+                        text=complaint.complaint_text,
+                        status=complaint.status,
+                    )
                     subject = 'Complaint Created!'
                     if user_reviewer.email != 'projectwork.testemail@gmail.com':
                         body = 'Hello System Admin, ' + ', a complaint against ' + str(user_against.name) + ' has been submitted by ' + str(request.user.name) + '.'
@@ -90,7 +96,7 @@ def complaintCard(request, pk):
     if complaint_obj.reviewer == request.user.email or complaint_obj.user == request.user.email or request.user.email == 'projectwork.testemail@gmail.com':
         messages.error(request, 'You are not authorized to see this complaint!')
         return redirect('my-account')
-    comments = Comments.objects.all().filter(complaint_id=pk).order_by('created')
+    comments = Comments.objects.all().filter(complaint_id=pk).order_by('-created')
     if request.method == 'POST':
         form = MakeCommentForm(request.POST)
         if form.is_valid():
@@ -139,6 +145,12 @@ def editComplaint(request, pk):
                 if complaint.reviewer is None:
                     complaint.reviewer = reviewer
                 complaint.save()
+                history = History.objects.create(
+                    complaint_id=complaint,
+                    reviewer=complaint.reviewer,
+                    text=complaint.complaint_text,
+                    status=complaint.status,
+                )
                 messages.success(request, 'Your complaint review has been updated!')
                 names = str(complaint.against.name)
                 if complaint.against_2 is not None:
@@ -173,16 +185,24 @@ def editComplaint(request, pk):
                         [complaint.reviewer.email],
                         fail_silently=False,
                     )
-                return redirect('my-account')
+                return redirect('complaint-card', pk=complaint.id)
             else:
                 messages.error(request, 'Something went wrong!')
     else:
+        prev_text = complaint.complaint_text
         form = EditComplaintNonReviewerForm(instance=complaint)
         if request.method == 'POST':
             form = EditComplaintNonReviewerForm(request.POST, request.FILES, instance=complaint)
             if form.is_valid():
                 complaint = form.save(commit=False)
                 complaint.save()
+                if complaint.complaint_text != prev_text:
+                    history = History.objects.create(
+                        complaint_id=complaint,
+                        reviewer=complaint.reviewer,
+                        text=complaint.complaint_text,
+                        status=complaint.status,
+                    )
                 messages.success(request, 'Your complaint has been updated!')
                 names = str(complaint.against.name)
                 if complaint.against_2 is not None:
@@ -208,7 +228,7 @@ def editComplaint(request, pk):
                     [reviewer.email],
                     fail_silently=False,
                 )
-                return redirect('my-account')
+                return redirect('complaint-card', pk=complaint.id)
             else:
                 messages.error(request, 'Something went wrong!')
     context = {'form': form, 'complaint': complaint}
@@ -222,5 +242,5 @@ def seeHistory(request, pk):
         messages.error(request, 'You are not authorized to see this complaint!')
         return redirect('my-account')
     history = History.objects.all().filter(complaint_id=pk).order_by('-created')
-    context = {'history': history}
+    context = {'history': history, 'complaint': complaint_obj}
     return render(request, 'Complaint/history.html', context)

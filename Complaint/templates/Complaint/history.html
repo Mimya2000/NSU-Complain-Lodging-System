@@ -56,9 +56,13 @@
 <div class="container text-center" style="padding-top: 100px; position: relative; min-height: 100vh;">
     <br>
     <br>
+    <a class="btn btn-info btn-lg float-left ml-1" href="{% url 'complaint-card' complaint.id %}"><i class="fas fa-angle-left"></i></a>
     <div class="bg-light">
         <div class="row d-flex justify-content-center p-4">
-            <h2>Update History</h2>
+            <h2>Complaint History</h2>
+            <br>
+            <br>
+            <br>
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -70,9 +74,9 @@
                 </thead>
                 <tbody>
                 {% for update in history %}
-                <tr>
+                <tr class="text-secondary">
                     <td>{{update.text}}</td>
-                    <td><a href="{% url 'profile' update.reviewer %}" class="text-decoration-noneS">{{update.reviewer.name}}</a></td>
+                    <td><a href="{% url 'profile' update.reviewer %}" class="text-decoration-none text-secondary">{{update.reviewer.name}}</a></td>
                     <td>{{update.status}}</td>
                     <td>{{update.created | naturaltime}}</td>
                 </tr>
