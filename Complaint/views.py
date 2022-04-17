@@ -87,10 +87,10 @@ def addComplaint(request):
 def complaintCard(request, pk):
     form = MakeCommentForm()
     complaint_obj = Complaints.objects.get(id=pk)
-    if complaint_obj.reviewer == request.user or complaint_obj.user == request.user or request.user.email == 'projectwork.testemail@gmail.com':
+    if complaint_obj.reviewer == request.user.email or complaint_obj.user == request.user.email or request.user.email == 'projectwork.testemail@gmail.com':
         messages.error(request, 'You are not authorized to see this complaint!')
         return redirect('my-account')
-    comments = Comments.objects.all().filter(complaint_id=pk)
+    comments = Comments.objects.all().filter(complaint_id=pk).order_by('created')
     if request.method == 'POST':
         form = MakeCommentForm(request.POST)
         if form.is_valid():
@@ -107,7 +107,7 @@ def complaintCard(request, pk):
 
 @login_required(login_url='login')
 def complaintStatus(request):
-    complaints = Complaints.objects.all()
+    complaints = Complaints.objects.all().order_by('-created')
     if request.user.type == 'Student' or request.user.type == 'Staff':
         lodged = complaints.filter(user=request.user)
         lodged_open = lodged.exclude(status='Reviewed').exclude(status='Declined')
@@ -218,9 +218,9 @@ def editComplaint(request, pk):
 @login_required(login_url='login')
 def seeHistory(request, pk):
     complaint_obj = Complaints.objects.get(id=pk)
-    if complaint_obj.reviewer == request.user or complaint_obj.user == request.user or request.user.email == 'projectwork.testemail@gmail.com':
+    if complaint_obj.reviewer == request.user.email or complaint_obj.user == request.user.email or request.user.email == 'projectwork.testemail@gmail.com':
         messages.error(request, 'You are not authorized to see this complaint!')
         return redirect('my-account')
-    history = History.objects.all().filter(complaint_id=pk)
+    history = History.objects.all().filter(complaint_id=pk).order_by('-created')
     context = {'history': history}
     return render(request, 'Complaint/history.html', context)

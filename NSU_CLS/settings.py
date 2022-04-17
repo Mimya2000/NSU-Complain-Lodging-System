@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'widget_tweaks',
+    'django.contrib.humanize',
 
     'Home.apps.HomeConfig',
     'Authentication.apps.AuthenticationConfig',
