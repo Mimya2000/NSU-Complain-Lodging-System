@@ -42,13 +42,26 @@
                             <label for="drop1" class="form-label" style="opacity: 0.8;">Change Reviewer</label>
                             {% render_field field id="drop1" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
                         </div>
-                    {% else %}
+                    {% elif field.label == 'Status' %}
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-id-badge"></i> </span>
                         </div>
                         <div class="form-control">
                             <label for="drop2" class="form-label" style="opacity: 0.8;">Change Status</label>
                             {% render_field field id="drop2" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
+                        </div>
+                    {% elif field.label == 'Text' %}
+                        <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fas fa-envelope-open"></i> </span>
+                        </div>
+                        {% render_field field class="form-control" placeholder=field.label %}
+                    {% elif field.label == 'Proof' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="far fa-file-image"></i> </span>
+                        </div>
+                        <div class="form-control">
+                            <label for="cardimg" class="form-label" style="opacity: 0.8;">Update the proof image</label>
+                            {% render_field field id="cardimg" %}
                         </div>
                     {% endif %}
                     </div>

@@ -3,21 +3,25 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import StudentForm, FacultyForm, AdminEmployeeForm, HelpingStaffForm
 from django.contrib.auth import get_user_model
+from Complaint.models import Complaints
 
 
 @login_required(login_url='login')
 def userAccount(request):
     user_object = request.user
-    # print(user_object.type)
+    open_lodged = Complaints.objects.all().filter(user=user_object).exclude(status='Declined').exclude(status='Reviewed').count()
+    open_review = 0
     if user_object.type == 'Student':
         profile = user_object.student
     elif user_object.type == 'Faculty':
         profile = user_object.faculty
+        open_review = Complaints.objects.all().filter(reviewer=user_object).exclude(status='Declined').exclude(status='Reviewed').count()
     elif user_object.type == 'Staff':
         profile = user_object.staff
     else:
         profile = user_object.administrator
-    context = {'user': user_object, 'profile': profile}
+        open_review = Complaints.objects.all().filter(reviewer=user_object).exclude(status='Declined').exclude(status='Reviewed').count()
+    context = {'user': user_object, 'profile': profile, 'active': open_lodged, 'review': open_review}
     return render(request, 'Profile/user_account.html', context)
 
 

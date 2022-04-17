@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
-from .forms import CreateComplaintForm, EditComplaintReviewerForm
+from .forms import CreateComplaintForm, EditComplaintReviewerForm, EditComplaintNonReviewerForm
 from .models import Complaints
 
 
@@ -157,6 +157,41 @@ def editComplaint(request, pk):
                         [complaint.reviewer.email],
                         fail_silently=False,
                     )
+                return redirect('my-account')
+            else:
+                messages.error(request, 'Something went wrong!')
+    else:
+        form = EditComplaintNonReviewerForm(instance=complaint)
+        if request.method == 'POST':
+            form = EditComplaintNonReviewerForm(request.POST, instance=complaint)
+            if form.is_valid():
+                complaint = form.save(commit=False)
+                complaint.save()
+                messages.success(request, 'Your complaint has been updated!')
+                names = str(complaint.against.name)
+                if complaint.against_2 is not None:
+                    names += ', '
+                    names += str(complaint.against_2.name)
+                if complaint.against_3 is not None:
+                    names += ', '
+                    names += str(complaint.against_3.name)
+                subject = 'Complaint Updated!'
+                body = 'Hello ' + str(lodger.name) + ', your complaint against ' + names + ' has been updated successfully.'
+                send_mail(
+                    subject,
+                    body,
+                    settings.EMAIL_HOST_USER,
+                    [lodger.email],
+                    fail_silently=False,
+                )
+                body = 'Hello ' + str(reviewer.name) + ', one of the complaints you are reviewing has been updated.'
+                send_mail(
+                    subject,
+                    body,
+                    settings.EMAIL_HOST_USER,
+                    [reviewer.email],
+                    fail_silently=False,
+                )
                 return redirect('my-account')
             else:
                 messages.error(request, 'Something went wrong!')

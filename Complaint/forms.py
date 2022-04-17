@@ -34,3 +34,13 @@ class EditComplaintReviewerForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(EditComplaintReviewerForm, self).__init__(*args, **kwargs)
         self.fields['reviewer'] = ModelChoiceField(required=False, queryset=get_user_model().objects.all().exclude(type='Student').exclude(type='Staff'))
+
+
+class EditComplaintNonReviewerForm(ModelForm):
+    class Meta:
+        model = Complaints
+        fields = ('complaint_text', 'proof')
+        labels = {
+            'complaint_text': 'Text',
+            'proof': 'Proof',
+        }
