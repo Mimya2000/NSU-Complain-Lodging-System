@@ -25,3 +25,25 @@ class Complaints(models.Model):
         return str(self.id)
 
 
+class History(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    complaint_id = models.ForeignKey(Complaints, on_delete=models.CASCADE)
+    reviewer = models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.CASCADE)
+    text = models.TextField(max_length=5000)
+    status = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)
+
+
+class Comments(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    complaint_id = models.ForeignKey(Complaints, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    comment_text = models.TextField(max_length=5000)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)
+
