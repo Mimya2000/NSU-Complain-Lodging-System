@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <title>Update Profile</title>
+</head>
+
+
+<body>
+{% include 'messages.html' %}
+
+{% if not messages %}
+    <br><br><br><br>
+    <div></div>
+{% endif%}
+
+<!-- ****************************** edit start ****************************** -->
+
+<div class="container" style="padding-top: 100px; position: relative; min-height: 100vh;">
+    <br>
+    <div class="card bg-light">
+        <article class="card-body mx-auto" style="width: 500px;">
+            <a class="btn btn-info btn-lg float-left" href="{% url 'my-account' %}"><i class="fas fa-angle-left"></i></a>
+            <h4 class="card-title mt-3 text-center">Update Profile</h4>
+            <p>If you want to update any other information, please contact the Admin at projectwork.testemail@gmail.com</p>
+            <br>
+            <form action="{% url 'update-profile' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group input-group">
+                    {% if field.label == 'Profile Picture' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-image"></i> </span>
+                        </div>
+                        <div class="form-control">
+                            <label for="dp" class="form-label" style="opacity: 0.8;">Insert a profile picture</label>
+                            {% render_field field id="dp" %}
+                        </div>
+                    {% elif field.label == 'Department' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                        </div>
+                        <div class="form-control">
+                            <label for="drop" class="form-label" style="opacity: 0.8;">Choose your department</label>
+                            {% render_field field id="drop" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
+                        </div>
+                    {% elif field.label == 'Office' %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                        </div>
+                        <div class="form-control">
+                            <label for="drop" class="form-label" style="opacity: 0.8;">Choose your office</label>
+                            {% render_field field id="drop" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
+                        </div>
+                    {% else %}
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-id-badge"></i> </span>
+                        </div>
+                        {% render_field field class="form-control" placeholder=field.label %}
+                    {% endif %}
+                    </div>
+                    {% for error in field.errors %}
+                        <p style="color: red; font-size: 12px; line-height: 0em;"> {{error}} </p>
+                    {% endfor %}
+                {% endfor %}
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Save </button>
+                </div> <!-- form-group// -->
+            </form>
+        </article>
+    </div> <!-- card.// -->
+
+</div>
+<!--container end.//-->
+
+
+</body>
+</html>
