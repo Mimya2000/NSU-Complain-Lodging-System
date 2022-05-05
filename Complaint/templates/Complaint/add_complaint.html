@@ -40,7 +40,7 @@
                     <a href="{% url 'add-complaint' %}" class="nav-link active">Add a Complaint</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">Status</a>
+                    <a href="{% url 'status' %}" class="nav-link">Status</a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" class="nav-link">Logout</a>
@@ -66,6 +66,7 @@
     <div class="card bg-light">
         <article class="card-body mx-auto" style="width: 500px;">
             <h4 class="card-title mt-3 text-center">Create Complaint</h4>
+            <p class="text-center"> You can complaint against maximum three people at a time, selecting at least one person is mandatory. </p>
             <form action="{% url 'add-complaint' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
@@ -77,6 +78,22 @@
                             <div class="form-control">
                                 <label for="drop1" class="form-label" style="opacity: 0.8;">Complaint Against</label>
                                 {% render_field field id="drop1" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
+                            </div>
+                        {% elif field.label == 'Against 2' %}
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                            </div>
+                            <div class="form-control">
+                                <label for="drop2" class="form-label" style="opacity: 0.8;">Complaint Against</label>
+                                {% render_field field id="drop2" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
+                            </div>
+                        {% elif field.label == 'Against 3' %}
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                            </div>
+                            <div class="form-control">
+                                <label for="drop3" class="form-label" style="opacity: 0.8;">Complaint Against</label>
+                                {% render_field field id="drop3" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
                             </div>
                         {% elif field.label == 'Attach proof (image)' %}
                             <div class="input-group-prepend">
@@ -91,13 +108,13 @@
                                 <span class="input-group-text"> <i class="fas fa-envelope-open"></i> </span>
                             </div>
                             {% render_field field class="form-control" placeholder=field.label %}
-                        {% else %}
+                        {% elif field.label == 'Reviewer' %}
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fas fa-user-tie"></i> </span>
                             </div>
                             <div class="form-control">
-                                <label for="drop2" class="form-label" style="opacity: 0.8;">Choose a reviewer or leave blank to let System choose</label>
-                                {% render_field field id="drop2" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
+                                <label for="drop4" class="form-label" style="opacity: 0.8;">Choose a reviewer or leave blank to let System choose</label>
+                                {% render_field field id="drop4" class="btn btn-outline-secondary dropdown-toggle" style="width:300px;" %}
                             </div>
                         {% endif %}
                     </div>

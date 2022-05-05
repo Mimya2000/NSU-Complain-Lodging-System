@@ -34,7 +34,7 @@
                     <a href="{% url 'add-complaint' %}" class="nav-link">Add a Complaint</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">Status</a>
+                    <a href="{% url 'status' %}" class="nav-link">Status</a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" class="nav-link">Logout</a>
@@ -51,7 +51,7 @@
 {% if not messages %}
     <br><br><br><br>
     <div></div>
-{% endif%}
+{% endif %}
 
 <!-- ****************************** Profile Design start ****************************** -->
 <div class="container" style="padding-top: 100px; position: relative; min-height: 100vh;">
@@ -62,10 +62,10 @@
                     <div class="row z-depth-3">
                         <div class="col-sm-4 bg.info rounded-left">
                             <div class="card-block text-center text-black">
-                                <img class="img-fluid rounded mx-auto d-block" src="{{ profile.picture.url }}">
+                                <img class="img-fluid rounded mx-auto d-block img-thumbnail" style="max-height: 300px;" src="{{ profile.picture.url }}">
                                 <h2 class="font-weight-bold mt-4">{{ user.name }}</h2>
                                 {% if user.type == 'Faculty' %}
-                                    <p>{{ user.type }}, Chairman</p>
+                                    <p>{{ user.type }}</p>
                                 {% else %}
                                     <p>{{ user.type }}</p>
                                 {% endif %}
@@ -97,17 +97,17 @@
                                         <p class="h5 fw-bold text-muted"><span class="text-dark">Program:</span> {{ user.student.program }}</p>
                                     </div>
                                     <div class="col-sm-6 pt-3">
-                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Active Complaints:</span> </p>
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Active Complaints:</span> {{ active }} </p>
                                     </div>
                                 {% elif user.type == 'Faculty' %}
                                     <div class="col-sm-6 pt-3">
                                         <p class="h5 fw-bold text-muted"><span class="text-dark">Department:</span> {{ user.faculty.department }}</p>
                                     </div>
                                     <div class="col-sm-6 pt-3">
-                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Active Complaints:</span> </p>
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Active Complaints:</span>  {{ active }} </p>
                                     </div>
                                     <div class="col-sm-6 pt-3">
-                                        <p class="h5 fw-bold text-muted"><span class="text-dark">To be reviewed:</span> </p>
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">To be reviewed:</span> {{ review }} </p>
                                     </div>
                                 {% elif user.type == 'Administrator' %}
                                     <div class="col-sm-6 pt-3">
@@ -117,14 +117,14 @@
                                         <p class="h5 fw-bold text-muted"><span class="text-dark">Designation:</span> {{ user.adminemployee.designation }}</p>
                                     </div>
                                     <div class="col-sm-6 pt-3">
-                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Active Complaints:</span> </p>
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Active Complaints:</span>  {{ active }} </p>
                                     </div>
                                     <div class="col-sm-6 pt-3">
-                                        <p class="h5 fw-bold text-muted"><span class="text-dark">To be reviewed:</span> </p>
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">To be reviewed:</span> {{ review }} </p>
                                     </div>
                                 {% elif user.type == 'Staff' %}
                                     <div class="col-sm-6 pt-3">
-                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Active Complaints:</span> </p>
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Active Complaints:</span> {{ active }}  </p>
                                     </div>
                                 {% endif %}
                             </div>

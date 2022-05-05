@@ -16,6 +16,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail, BadHeaderError
 from django.conf import settings
 from django.http import HttpResponse
+from django.contrib.auth import views as auth_views
 
 
 def signup(request):
@@ -151,7 +152,7 @@ def passwordReset(request):
                         "name": user.name,
                         'domain': '127.0.0.1:8000',
                         'site_name': 'NSU_CLS',
-                        "uid": urlsafe_base64_encode(force_bytes(user.nsu_id)),
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
                         'token': default_token_generator.make_token(user),
                         'protocol': 'http',
@@ -173,3 +174,4 @@ def passwordReset(request):
     form = PasswordResetForm()
     context = {'form': form}
     return render(request, 'reset_password.html', context)
+

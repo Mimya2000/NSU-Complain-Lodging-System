@@ -17,7 +17,7 @@
 <!-- ****************************** NAVBAR STARTS ****************************** -->
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="">
             <img src="{% static 'images/logo.png' %}" alt="" width="200" class="d-inline-block align-text-top">
         </a>
 
@@ -28,13 +28,13 @@
             <ul class="navbar-nav ms-auto">
 
                 <li class="nav-item">
-                    <a href="" class="nav-link">My Profile</a>
+                    <a href="{% url 'my-account' %}" class="nav-link">My Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">Add a Complaint</a>
+                    <a href="{% url 'add-complaint' %}" class="nav-link">Add a Complaint</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">Status</a>
+                    <a href="{% url 'status' %}" class="nav-link">Status</a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" class="nav-link">Logout</a>
@@ -45,6 +45,14 @@
 </nav>
 
 <!-- ****************************** NAVBAR ENDS ****************************** -->
+
+{% include 'messages.html' %}
+
+{% if not messages %}
+    <br><br><br><br>
+    <div></div>
+{% endif %}
+
 <!-- ****************************** Profile Design start ****************************** -->
 <div class="container" style="padding-top: 100px; position: relative; min-height: 100vh;">
     <br>
@@ -54,31 +62,51 @@
                     <div class="row z-depth-3">
                         <div class="col-sm-4 bg.info rounded-left">
                             <div class="card-block text-center text-black">
-                                <img class="img-fluid rounded mx-auto d-block" src="{% static 'images/dp/default.png' %}">
-                                <h2 class="font-weight-bold mt-4">Name</h2>
-                                <p>Type</p>
-                                <br>
+                                <img class="img-fluid rounded mx-auto d-block img-thumbnail" style="max-height: 300px;" src="{{ profile.picture.url }}">
+                                <h2 class="font-weight-bold mt-4">{{ user.name }}</h2>
+                                {% if user.type == 'Faculty' %}
+                                    <p>{{ user.type }}</p>
+                                {% else %}
+                                    <p>{{ user.type }}</p>
+                                {% endif %}
+                                <br><br><br>
                             </div>
                         </div>
                         <div class="col-sm-8 bg.white rounded-right">
                             <h3 class="mt-3 text-left">Information</h3>
                             <hr class="badge-primary mt-0 w-25">
-                            <div class="row text-left" style="padding-top: 30px;">
-                                <div class="col-sm-6">
-                                    <p class="fw-bold text-muted"><span class="text-dark">Name:</span> name</p>
+                            <div class="row text-left">
+                                <div class="col-sm-6 pt-3">
+                                    <p class="h5 fw-bold text-muted"><span class="text-dark">Name:</span> {{ user.name }}</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="fw-bold text-muted"><span class="text-dark">Email:</span> email</p>
+                                <div class="col-sm-6 pt-3">
+                                    <p class="h5 fw-bold text-muted"><span class="text-dark">Email:</span> {{ user.email }}</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="fw-bold text-muted"><span class="text-dark">Phone:</span> phone</p>
+                                <div class="col-sm-6 pt-3">
+                                    <p class="h5 fw-bold text-muted"><span class="text-dark">Phone:</span> {{ user.phone }}</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="fw-bold text-muted"><span class="text-dark">Nsu id:</span> nsu id</p>
+                                <div class="col-sm-6 pt-3">
+                                    <p class="h5 fw-bold text-muted"><span class="text-dark">NSU ID:</span> {{ user.nsu_id }}</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="fw-bold text-muted"><span class="text-dark">Active complaints:</span> name</p>
-                                </div>
+                                {% if user.type == 'Student' %}
+                                    <div class="col-sm-6 pt-3">
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Department:</span> {{ user.student.department }}</p>
+                                    </div>
+                                    <div class="col-sm-6 pt-3">
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Program:</span> {{ user.student.program }}</p>
+                                    </div>
+                                {% elif user.type == 'Faculty' %}
+                                    <div class="col-sm-6 pt-3">
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Department:</span> {{ user.faculty.department }}</p>
+                                    </div>
+                                {% elif user.type == 'Administrator' %}
+                                    <div class="col-sm-6 pt-3">
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Office:</span> {{ user.adminemployee.office }}</p>
+                                    </div>
+                                    <div class="col-sm-6 pt-3">
+                                        <p class="h5 fw-bold text-muted"><span class="text-dark">Designation:</span> {{ user.adminemployee.designation }}</p>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

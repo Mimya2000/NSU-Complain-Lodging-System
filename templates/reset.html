@@ -34,7 +34,7 @@
             <a class="btn btn-info btn-lg" href="{% url 'login' %}"><i class="fas fa-angle-left"></i></a>
             <h2 class="text-center">Enter new password</h2>
             <h4 class="card-title mt-3 text-center">Please enter your new password twice, so we can verify you typed it in correctly.</h4>
-            <form method="POST">
+            <form id="form" method="POST">
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="form-group input-group">
