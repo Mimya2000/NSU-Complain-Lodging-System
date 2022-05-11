@@ -46,7 +46,7 @@ def updateProfile(request):
                 messages.success(request, 'Your information has been updated!')
                 return redirect('my-account')
     elif request.user.type == 'Administrator':
-        admin_employee = request.user.adminemployee
+        admin_employee = request.user.administrator
         form = AdminEmployeeForm(instance=admin_employee)
         if request.method == 'POST':
             form = AdminEmployeeForm(request.POST, request.FILES, instance=admin_employee)
@@ -55,7 +55,7 @@ def updateProfile(request):
                 messages.success(request, 'Your information has been updated!')
                 return redirect('my-account')
     else:
-        staff = request.user.helpingstaff
+        staff = request.user.staff
         form = HelpingStaffForm(instance=staff)
         if request.method == 'POST':
             form = HelpingStaffForm(request.POST, request.FILES, instance=staff)
